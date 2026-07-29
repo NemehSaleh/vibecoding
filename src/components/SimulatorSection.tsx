@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../utils/storage';
 import React, { useState, useEffect, useRef } from 'react';
 import JSZip from 'jszip';
 import { 
@@ -71,7 +72,7 @@ interface SimulatorDraft {
 
 const loadSimulatorDraft = (): SimulatorDraft | null => {
   try {
-    const raw = localStorage.getItem(SIMULATOR_STORAGE_KEY);
+    const raw = safeGetItem(SIMULATOR_STORAGE_KEY);
     if (raw) {
       return JSON.parse(raw);
     }
@@ -188,7 +189,7 @@ export const SimulatorSection: React.FC<SimulatorSectionProps> = ({
           chatMessages,
           lastSavedAt: timeStr
         };
-        localStorage.setItem(SIMULATOR_STORAGE_KEY, JSON.stringify(draftObj));
+        safeSetItem(SIMULATOR_STORAGE_KEY, JSON.stringify(draftObj));
         setLastSavedTime(timeStr);
       } catch (err) {
         console.error('Failed to auto-save simulator draft:', err);
@@ -211,7 +212,7 @@ export const SimulatorSection: React.FC<SimulatorSectionProps> = ({
   // Clear Saved Draft Action
   const handleClearDraft = () => {
     try {
-      localStorage.removeItem(SIMULATOR_STORAGE_KEY);
+      safeRemoveItem(SIMULATOR_STORAGE_KEY);
       const defaultPrompt = 'ابنِ حاسبة سعرات حرارية وتغذية صحية تفاعلية بـ HTML و Tailwind CSS مع ألوان Indigo وحواف زوايا rounded-2xl.';
       const defaultCode = getPresetSimulationCode('حاسبة سعرات', 'clean');
       

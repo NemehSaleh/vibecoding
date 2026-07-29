@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../utils/storage';
 export interface UserAvatar {
   id: string;
   name: string;
@@ -116,7 +117,7 @@ export const AVATAR_STORAGE_KEY = 'vibe_coder_user_selected_avatar_v1';
 
 export const getStoredAvatar = (): UserAvatar => {
   try {
-    const savedId = localStorage.getItem(AVATAR_STORAGE_KEY);
+    const savedId = safeGetItem(AVATAR_STORAGE_KEY);
     if (savedId) {
       const found = predefinedAvatars.find(a => a.id === savedId);
       if (found) return found;

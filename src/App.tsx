@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from './utils/storage';
 import React, { useState, useEffect, useRef } from 'react';
 import { SectionType, UserProgress, AchievementBadge } from './types';
 import { Navbar } from './components/Navbar';
@@ -70,7 +71,7 @@ export default function App() {
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [simulatorPrompt, setSimulatorPrompt] = useState<string>('');
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const savedMode = localStorage.getItem('vibe_dark_mode');
+    const savedMode = safeGetItem('vibe_dark_mode');
     return savedMode !== null ? savedMode === 'true' : true; // default to high-contrast dark theme
   });
 
@@ -78,7 +79,7 @@ export default function App() {
 
   // Sync Dark Mode state
   useEffect(() => {
-    localStorage.setItem('vibe_dark_mode', String(darkMode));
+    safeSetItem('vibe_dark_mode', String(darkMode));
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -88,7 +89,7 @@ export default function App() {
 
   // Auto-launch Onboarding Tour on First Visit
   useEffect(() => {
-    const tourCompleted = localStorage.getItem('vibe_tour_completed');
+    const tourCompleted = safeGetItem('vibe_tour_completed');
     if (!tourCompleted) {
       const timer = setTimeout(() => {
         setTourOpen(true);
@@ -99,7 +100,7 @@ export default function App() {
 
   // Local Storage User Progress State
   const [userProgress, setUserProgress] = useState<UserProgress>(() => {
-    const saved = localStorage.getItem('vibe_arabic_progress');
+    const saved = safeGetItem('vibe_arabic_progress');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -129,7 +130,7 @@ export default function App() {
 
   // Sync Progress to LocalStorage
   useEffect(() => {
-    localStorage.setItem('vibe_arabic_progress', JSON.stringify(userProgress));
+    safeSetItem('vibe_arabic_progress', JSON.stringify(userProgress));
   }, [userProgress]);
 
   // Check Badge Unlocks dynamically and trigger Badge Unlock Sound
@@ -227,7 +228,7 @@ export default function App() {
       simulatorHistory: []
     };
     setUserProgress(defaultState);
-    localStorage.removeItem('vibe_arabic_progress');
+    safeRemoveItem('vibe_arabic_progress');
     setResetConfirmOpen(false);
     showToast('تم تصفير تقدمك وإعادة الضبط بنجاح 🔄', 'info');
   };

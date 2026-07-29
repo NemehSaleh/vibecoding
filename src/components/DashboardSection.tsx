@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../utils/storage';
 import React, { useState } from 'react';
 import { UserProgress, AchievementBadge } from '../types';
 import { learningLevels } from '../data/learningPathData';
@@ -72,7 +73,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
   const handleSelectAvatar = (avatar: UserAvatar) => {
     try {
       setSelectedAvatar(avatar);
-      localStorage.setItem(AVATAR_STORAGE_KEY, avatar.id);
+      safeSetItem(AVATAR_STORAGE_KEY, avatar.id);
       playBadgeUnlockSound();
       triggerBadgeConfetti();
       showToast(`تم تعيين الصورة الرمزية: "${avatar.name}" بنجاح! 🎨`, 'success');

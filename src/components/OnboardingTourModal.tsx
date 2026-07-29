@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../utils/storage';
 import React, { useState } from 'react';
 import { SectionType } from '../types';
 import { 
@@ -163,7 +164,7 @@ export const OnboardingTourModal: React.FC<OnboardingTourModalProps> = ({
   };
 
   const handleCompleteTour = () => {
-    localStorage.setItem('vibe_tour_completed', 'true');
+    safeSetItem('vibe_tour_completed', 'true');
     confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
     showToast('أكملت الجولة التعليمية بنجاح! أنت جاهز للبدء 🎉', 'success');
     onClose();

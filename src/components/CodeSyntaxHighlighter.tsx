@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../utils/storage';
 import React, { useState, useEffect } from 'react';
 import { 
   Copy, 
@@ -77,28 +78,28 @@ export const CodeSyntaxHighlighter: React.FC<CodeSyntaxHighlighterProps> = ({
 
   // Customization settings with LocalStorage persistence
   const [theme, setTheme] = useState<CodeTheme>(() => {
-    return (localStorage.getItem('vibe_code_theme') as CodeTheme) || 'vscode-dark';
+    return (safeGetItem('vibe_code_theme') as CodeTheme) || 'vscode-dark';
   });
 
   const [fontSize, setFontSize] = useState<CodeFontSize>(() => {
-    return (localStorage.getItem('vibe_code_fontsize') as CodeFontSize) || 'sm';
+    return (safeGetItem('vibe_code_fontsize') as CodeFontSize) || 'sm';
   });
 
   const [fontFamily, setFontFamily] = useState<CodeFontFamily>(() => {
-    return (localStorage.getItem('vibe_code_fontfamily') as CodeFontFamily) || 'fira';
+    return (safeGetItem('vibe_code_fontfamily') as CodeFontFamily) || 'fira';
   });
 
   // Save changes to localStorage
   useEffect(() => {
-    localStorage.setItem('vibe_code_theme', theme);
+    safeSetItem('vibe_code_theme', theme);
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem('vibe_code_fontsize', fontSize);
+    safeSetItem('vibe_code_fontsize', fontSize);
   }, [fontSize]);
 
   useEffect(() => {
-    localStorage.setItem('vibe_code_fontfamily', fontFamily);
+    safeSetItem('vibe_code_fontfamily', fontFamily);
   }, [fontFamily]);
 
   const handleCopy = () => {

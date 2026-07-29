@@ -1,3 +1,4 @@
+import { safeGetItem, safeSetItem, safeRemoveItem } from './storage';
 // Web Audio API Sound Generator for Vibe Coding Arabic Platform
 // Synthetic tones generated dynamically without external assets or dependencies.
 
@@ -27,7 +28,7 @@ const getAudioContext = (): AudioContext | null => {
 // Toggle Mute State
 export const isSoundMuted = (): boolean => {
   if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('vibe_coding_sound_muted');
+    const stored = safeGetItem('vibe_coding_sound_muted');
     if (stored !== null) {
       soundMuted = stored === 'true';
     }
@@ -38,7 +39,7 @@ export const isSoundMuted = (): boolean => {
 export const setSoundMuted = (muted: boolean) => {
   soundMuted = muted;
   if (typeof window !== 'undefined') {
-    localStorage.setItem('vibe_coding_sound_muted', String(muted));
+    safeSetItem('vibe_coding_sound_muted', String(muted));
   }
 };
 
