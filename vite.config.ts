@@ -4,8 +4,12 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // Automatically set base path for GitHub Pages using the repository name
+  const githubRepo = process.env.GITHUB_REPOSITORY;
+  const basePath = githubRepo ? `/${githubRepo.split('/')[1]}/` : './';
+
   return {
-    base: '/vibecoding/', 
+    base: basePath,
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
